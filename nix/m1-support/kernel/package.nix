@@ -19,15 +19,15 @@
     linuxKernel.manualConfig rec {
       inherit stdenv lib;
 
-      version = "5.19.0-asahi";
+      version = "6.1.0-rc2-asahi";
       modDirVersion = version;
 
       src = fetchFromGitHub {
         # tracking branch: https://github.com/AsahiLinux/linux/tree/asahi
         owner = "AsahiLinux";
         repo = "linux";
-        rev = "f8c0d18173a7b649999ee27515393f7aae40310c";
-        hash = "sha256-6Pceu4eBF8kl//8CV57+yfYnywZxNk17BU0YgLkGVc0=";
+        rev = "asahi-6.1-rc2-1";
+        hash = "sha256-QcVEoxuzk179hijvWeNDs+a0Xv5/IiuN3nLy7fMUM1c=";
       };
 
       kernelPatches = [
@@ -50,7 +50,7 @@
       configfile = ./config;
       config = readConfig configfile;
 
-      extraMeta.branch = "5.19";
+      extraMeta.branch = "6.1";
     } // (args.argsOverride or {});
 
   linux_asahi = (pkgs.callPackage linux_asahi_pkg { });
