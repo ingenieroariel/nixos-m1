@@ -15,8 +15,9 @@
     echo "}" >> $out
   '').outPath;
 
-  linux_asahi_pkg = { stdenv, lib, fetchFromGitHub, fetchpatch, linuxKernel, ... } @ args:
-    linuxKernel.manualConfig rec {
+  linux_asahi_pkg = { stdenv, lib, fetchFromGitHub, fetchpatch, linuxKernel,
+      rustPlatform, rustfmt, rust-bindgen, ... } @ args:
+    (linuxKernel.manualConfig rec {
       inherit stdenv lib;
 
       version = "6.1.0-rc2-asahi";
@@ -51,7 +52,10 @@
       config = readConfig configfile;
 
       extraMeta.branch = "6.1";
-    } // (args.argsOverride or {});
+    } // (args.argsOverride or {})).overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ rust-bindgen rustfmt rustPlatform.rust.rustc ];
+      RUST_LIB_SRC = rustPlatform.rustLibSrc;
+    });
 
   linux_asahi = (pkgs.callPackage linux_asahi_pkg { });
 in pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_asahi)
