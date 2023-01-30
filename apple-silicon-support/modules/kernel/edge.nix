@@ -25,6 +25,10 @@
           SUSPEND y
         '';
       }
+      {
+        name = "blocklist-type";
+        patch = builtins.fetchurl "https://patch-diff.githubusercontent.com/raw/AsahiLinux/linux/pull/109.diff";
+      }
     ];
 
     # required for proper DRM setup even without GPU driver
