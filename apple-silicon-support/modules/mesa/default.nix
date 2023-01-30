@@ -27,7 +27,7 @@
       # (and in a way compatible with pure evaluation)
       nixpkgs.overlays = [
         (final: prev: {
-          mesa = final.mesa-asahi-edge;
+          mesa = final.mesa-asahi-edge.override { inherit (prev) mesa; };
         })
       ];
     })
